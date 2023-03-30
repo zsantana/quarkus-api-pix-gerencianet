@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  servico-poc-api-pix-java:
+    container_name: servico-poc-api-pix-java
+    image: poc-api-pix-java:v1.0.0
+    environment:
+      - QUARKUS_PORT=$QUARKUS_PORT
+      
+      - GERENCIANET_CLIENT_ID=$GERENCIANET_CLIENT_ID
+      - GERENCIANET_CLIENT_SECRET=$GERENCIANET_CLIENT_SECRET
+      - GERENCIANET_KEYSTOREPATCH=$GERENCIANET_KEYSTOREPATCH
+
+      - GERENCIANET_URL=$GERENCIANET_URL
+      - GERENCIANET_COBRANCA_URL=$GERENCIANET_COBRANCA_URL
+      - GERENCIANET_QRCODE_URL=$GERENCIANET_QRCODE_URL
+    ports:
+      - $QUARKUS_PORT:$QUARKUS_PORT
+    networks:
+      - "host_sendbox"
+
+networks:
+  host_sendbox:
+    external: true
