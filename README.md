@@ -107,6 +107,9 @@ OBS:
 Por default a validade do token gerado pelo keycloak tem um tempo de expiração de 5 minutos, fique atento!
 
 
+# Estrutura do Projeto
+![image](https://user-images.githubusercontent.com/17239827/228963228-e22d31bf-8ed2-48da-8e71-9a1a81d658af.png)
+
 
 
 # Autor
