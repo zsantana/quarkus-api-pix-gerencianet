@@ -64,12 +64,6 @@ Observability:
 * smallrye-health 
 * opentelemetry
 
-
-Database:
-* hibernate-reactive-panache
-* reactive-pg-client
-
-
 Authentication and Security:
 * oidc-client
 * keycloak-authorization
