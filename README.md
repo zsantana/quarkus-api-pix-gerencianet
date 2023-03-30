@@ -104,7 +104,7 @@ Body:
 * client_secret: <client_secret>
 
 OBS:
-Por default a validade do token gerado pelo keycloak tem um tem de expiração de 5 minutos, fique atento!
+Por default a validade do token gerado pelo keycloak tem um tempo de expiração de 5 minutos, fique atento!
 
 
 
