@@ -5,13 +5,11 @@ import io.quarkus.test.security.TestSecurity;
 import wiremock.com.fasterxml.jackson.core.JsonProcessingException;
 import wiremock.com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.testng.annotations.BeforeTest;
 
 import br.com.xbinario.v1.cobranca.dto.Calendario;
 import br.com.xbinario.v1.cobranca.dto.Devedor;
@@ -64,9 +62,6 @@ public class QRCodeResourceTest {
 
         var responseBody = response.getBody().asString();
         var responseDTO = new ObjectMapper().readValue(responseBody, ResponseDTO.class);
-
-        System.out.println("################# LOC_ID: " + responseDTO.getLoc().getId());
-        System.out.println("################# LOC: " + responseDTO.toString());
 
         locationId = String.valueOf( responseDTO.getLoc().getId());
     }

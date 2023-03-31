@@ -63,9 +63,6 @@ public class CobrancaResourceTest {
         var responseBody = response.getBody().asString();
         var responseDTO = new ObjectMapper().readValue(responseBody, ResponseDTO.class);
 
-        System.out.println("################# RES: " + responseDTO.getTxid());
-        System.out.println("################# RES: " + responseDTO.toString());
-
         txId = responseDTO.getTxid();
     }
 
