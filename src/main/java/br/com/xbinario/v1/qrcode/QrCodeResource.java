@@ -34,7 +34,7 @@ public class QrCodeResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    //@RolesAllowed("CONSULTA_QRCODE")
+    @RolesAllowed("CONSULTA_QRCODE")
     @Tag(name = "QRCode", description = "Consulta de QRCode")
     @APIResponses({
         @APIResponse(responseCode = "200", description = "Consulta Realizada com sucesso."),
@@ -50,7 +50,7 @@ public class QrCodeResource {
             description = "Tempo medio das requisicoes.", 
             unit = MetricUnits.MILLISECONDS)
 
-    //@Retry(maxRetries = 3, delay = 2000)
+    @Retry(maxRetries = 3, delay = 2000)
     @CircuitBreaker(requestVolumeThreshold = 4, failureRatio = 0.5, delay = 5000, successThreshold = 2)
     public Response obterQrCode(@PathParam("id") String id) throws Exception {
         return Response.ok(qrCodeService.obterQrCode(gerencianetService.getToken(), id)).build();

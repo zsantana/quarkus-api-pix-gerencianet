@@ -12,7 +12,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
-import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
@@ -32,7 +31,7 @@ public class CobrancaResource {
 
 
     @POST
-    //@RolesAllowed("EFETUAR_COBRANCA")
+    @RolesAllowed("EFETUAR_COBRANCA")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Tag(name = "Cobrança", description = "Geração de cobranças no GerenciaNet")
@@ -59,7 +58,8 @@ public class CobrancaResource {
 
 
     @GET
-    //@RolesAllowed("CONSULTA_COBRANCA")
+    @Path("/all")
+    @RolesAllowed("CONSULTA_COBRANCA")
     @Produces(MediaType.APPLICATION_JSON)
     @Tag(name = "Cobrança", description = "Listagem das cobranças efetuadas no GerenciaNet")
     @APIResponses({
@@ -86,8 +86,8 @@ public class CobrancaResource {
 
 
     @GET
-    @Path("{txid}")
-    //@RolesAllowed("CONSULTA_COBRANCA")
+    @Path("/{txid}")
+    @RolesAllowed("CONSULTA_COBRANCA")
     @Produces(MediaType.APPLICATION_JSON)
     @Tag(name = "Cobrança", description = "Pesquisa de cobrança por Id GerenciaNet")
     @APIResponses({

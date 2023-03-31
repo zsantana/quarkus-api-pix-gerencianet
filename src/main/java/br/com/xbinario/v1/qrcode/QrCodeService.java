@@ -26,11 +26,11 @@ public class QrCodeService {
     
     public ResponseDTO obterQrCode(String token, String id) throws Exception {
             
-        String url = qrcode_url + id + "/qrcode";
-        String response = gerencianetService.sendHttpsGetRequest(token, url);
+        var url = qrcode_url + id + "/qrcode";
+        var response = gerencianetService.sendHttpsGetRequest(token, url);
 
         var objectMapper = new ObjectMapper();
-        ResponseDTO responseDTO = objectMapper.readValue(response, ResponseDTO.class);
+        var responseDTO = objectMapper.readValue(response, ResponseDTO.class);
 
         logger.info("### responseDTO: {}", response.toString());
         return responseDTO;

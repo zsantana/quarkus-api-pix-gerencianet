@@ -3,7 +3,6 @@ package br.com.xbinario.v1.auth;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -28,6 +27,7 @@ import io.vertx.core.json.JsonObject;
 public class GerencianetService {
 
     private static final Logger logger = LoggerFactory.getLogger(GerencianetService.class);
+    private static final String GRANT_TYPE  = "{\"grant_type\": \"client_credentials\"}";
 
     String msgErro = "Erro de autenticação";
 
@@ -49,12 +49,11 @@ public class GerencianetService {
 
     public TokenResponse getTokenObj() throws Exception {
 
-        String basicAuth = Base64.getEncoder().encodeToString((clientId+':'+ clientSecret).getBytes());
-        HttpsURLConnection conn = getHttpConnection(url, basicAuth, "POST", "Basic");
-        String body = "{\"grant_type\": \"client_credentials\"}";
+        var basicAuth = Base64.getEncoder().encodeToString((clientId+':'+ clientSecret).getBytes());
+        var conn = getHttpConnection(url, basicAuth, "POST", "Basic");
 
-        OutputStream os = conn.getOutputStream();
-        os.write(body.getBytes());
+        var os = conn.getOutputStream();
+        os.write(GRANT_TYPE.getBytes());
         os.flush();     
 
         if (conn.getResponseCode() != 200){
@@ -62,14 +61,13 @@ public class GerencianetService {
             throw new WebApplicationException(Response.status(conn.getResponseCode()).entity(msgErro).build());
         }
 
-        String response = new BufferedReader(new InputStreamReader(conn.getInputStream()))
+        var response = new BufferedReader(new InputStreamReader(conn.getInputStream()))
                                                             .lines()
                                                             .collect(Collectors.joining());
         conn.disconnect();                                                    
 
         var objectMapper = new ObjectMapper();
-        TokenResponse tokenResponse  = objectMapper.readValue(response, TokenResponse.class);
-
+        var tokenResponse  = objectMapper.readValue(response, TokenResponse.class);
         
         return tokenResponse;
     }
@@ -77,12 +75,11 @@ public class GerencianetService {
 
     public String getToken() throws Exception {
 
-        String basicAuth = Base64.getEncoder().encodeToString((clientId+':'+ clientSecret).getBytes());
-        HttpsURLConnection conn = getHttpConnection(url, basicAuth, "POST", "Basic");
-        String body = "{\"grant_type\": \"client_credentials\"}";
+        var basicAuth = Base64.getEncoder().encodeToString((clientId+':'+ clientSecret).getBytes());
+        var conn = getHttpConnection(url, basicAuth, "POST", "Basic");
 
-        OutputStream os = conn.getOutputStream();
-        os.write(body.getBytes());
+        var os = conn.getOutputStream();
+        os.write(GRANT_TYPE.getBytes());
         os.flush();     
 
         if (conn.getResponseCode() != 200){
@@ -90,27 +87,28 @@ public class GerencianetService {
             throw new WebApplicationException(Response.status(conn.getResponseCode()).entity(msgErro).build());
         }
 
-        String response = new BufferedReader(new InputStreamReader(conn.getInputStream()))
+        var response = new BufferedReader(new InputStreamReader(conn.getInputStream()))
                                                             .lines()
                                                             .collect(Collectors.joining());
 
-        JsonObject jsonObject = new JsonObject(response.toString());
-        String token = jsonObject.getString("access_token");
+        conn.disconnect();                                                             
 
-        conn.disconnect();
+        var jsonObject = new JsonObject(response.toString());
+        var token = jsonObject.getString("access_token");
+
         return token;
     }
 
     public String sendHttpsPostRequest(String token, String urlStr, String requestBody) throws Exception {
 
         logger.info("### POST: " + requestBody);
-        HttpsURLConnection conn = getHttpConnection(urlStr, token, "POST", "Bearer");
+        var conn = getHttpConnection(urlStr, token, "POST", "Bearer");
 
-        OutputStream os = conn.getOutputStream();
+        var os = conn.getOutputStream();
         os.write(requestBody.getBytes());
         os.flush();
 
-        String response = sendRequest(conn);
+        var response = sendRequest(conn);
         conn.disconnect();
         
         return response;
@@ -120,10 +118,16 @@ public class GerencianetService {
 
     public String sendHttpsGetRequest(String token, String urlStr) throws Exception {
 
-        logger.info("### GET: " + urlStr);
-        HttpsURLConnection conn = getHttpConnection(urlStr, token, "GET", "Bearer");
+        var conn = getHttpConnection(urlStr, token, "GET", "Bearer");
 
-        String response = sendRequest(conn);
+        var response = sendRequest(conn);
+
+        logger.info("Status Code: {}", conn.getResponseCode());
+
+        if (conn.getResponseCode() != 200 || conn.getResponseCode() != 201){
+            throw new WebApplicationException(Response.status(conn.getResponseCode()).entity(response).build());
+        }
+
         conn.disconnect();
         
         return response;
@@ -134,12 +138,13 @@ public class GerencianetService {
 
         logger.info("Efetuando consulta ...");
         
-        String response = "";
+        var response = "";
 
         try {
             
             response = getResponse(conn);
-            conn.disconnect();
+
+            
 
         } catch (Exception e) {
 
@@ -167,10 +172,10 @@ public class GerencianetService {
         logger.info("### typeAuth: "  + typeAuth);
         logger.info("### keyStorePath: " + keyStorePath);
 
-        SSLSocketFactory sslsocketfactory = getSSLSocketFactory();
+        var sslsocketfactory = getSSLSocketFactory();
 
-        URL url = new URL(urlStr);
-        HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+        var url = new URL(urlStr);
+        var conn = (HttpsURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod(methode);
         conn.setRequestProperty("Content-Type", "application/json");

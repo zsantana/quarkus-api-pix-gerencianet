@@ -2,6 +2,8 @@ package br.com.xbinario.v1.cobranca.dto;
 
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
+
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Data;
 

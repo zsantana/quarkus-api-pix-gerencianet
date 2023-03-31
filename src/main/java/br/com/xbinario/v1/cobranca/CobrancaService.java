@@ -32,11 +32,11 @@ public class CobrancaService {
 
     public ResponseDTO gerarCobranca(RequestDTO dto) throws Exception {
             
-        String requestBody = new ObjectMapper().writeValueAsString(dto);
-        String response = gerencianetService.sendHttpsPostRequest(gerencianetService.getToken(), cobranca_url, requestBody);
+        var requestBody = new ObjectMapper().writeValueAsString(dto);
+        var response = gerencianetService.sendHttpsPostRequest(gerencianetService.getToken(), cobranca_url, requestBody);
 
         var objectMapper = new ObjectMapper();
-        ResponseDTO responseDTO = objectMapper.readValue(response, ResponseDTO.class);
+        var responseDTO = objectMapper.readValue(response, ResponseDTO.class);
 
         logger.info("### responseDTO: {}", response.toString());
         return responseDTO;
@@ -46,16 +46,16 @@ public class CobrancaService {
 
     public ListaRequest obterListaCobranca() throws Exception {
 
-        String _url = cobranca_url + "?inicio=2023-03-29T08:01:35Z&fim=2023-03-30T20:10:00Z";
-        String token = gerencianetService.getToken();
+        var _url = cobranca_url + "?inicio=2023-03-29T08:01:35Z&fim=2023-03-30T20:10:00Z";
+        var token = gerencianetService.getToken();
 
         logger.info("_url: " + _url);
         logger.info("TOKEN: " + token);
 
-        String response = gerencianetService.sendHttpsGetRequest(token, _url);
+        var response = gerencianetService.sendHttpsGetRequest(token, _url);
 
         var objectMapper = new ObjectMapper();
-        ListaRequest responseDTO = objectMapper.readValue(response, ListaRequest.class);
+        var responseDTO = objectMapper.readValue(response, ListaRequest.class);
 
         logger.info("### responseDTO: {}", responseDTO.toString());
         return responseDTO;
@@ -65,11 +65,11 @@ public class CobrancaService {
 
     public ResponseDTO obterCobrancaId(String txId) throws Exception {
         
-        String _url = cobranca_url + "/" + txId;
-        String response = gerencianetService.sendHttpsGetRequest(gerencianetService.getToken(), _url);
+        var _url = cobranca_url + "/" + txId;
+        var response = gerencianetService.sendHttpsGetRequest(gerencianetService.getToken(), _url);
 
         var objectMapper = new ObjectMapper();
-        ResponseDTO responseDTO = objectMapper.readValue(response, ResponseDTO.class);
+        var responseDTO = objectMapper.readValue(response, ResponseDTO.class);
 
         logger.info("### responseDTO: {}", responseDTO.toString());
         return responseDTO;
