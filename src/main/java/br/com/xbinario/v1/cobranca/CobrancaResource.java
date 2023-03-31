@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
@@ -49,7 +50,7 @@ public class CobrancaResource {
             description = "Tempo medio das requisicoes.", 
             unit = MetricUnits.MILLISECONDS)
 
-    //@Retry(maxRetries = 3, delay = 2000)
+    @Retry(maxRetries = 3, delay = 2000)
     @CircuitBreaker(requestVolumeThreshold = 4, failureRatio = 0.5, delay = 5000, successThreshold = 2)
     public Response gerarCobranca(RequestDTO requisicaoDTO) throws Exception {
         return Response.ok(cobrancaService.gerarCobranca(requisicaoDTO)).build();
@@ -76,7 +77,7 @@ public class CobrancaResource {
             description = "Tempo medio das requisicoes.", 
             unit = MetricUnits.MILLISECONDS)
 
-    //@Retry(maxRetries = 3, delay = 2000)
+    @Retry(maxRetries = 3, delay = 2000)
     @CircuitBreaker(requestVolumeThreshold = 4, failureRatio = 0.5, delay = 5000, successThreshold = 2)
     public Response obterCobranca() throws Exception {
         return Response.ok(cobrancaService.obterListaCobranca()).build();
